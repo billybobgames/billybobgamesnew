@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM","ScriptHost", "ESNext"],
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "experimentalDecorators":true
+  }
+}
