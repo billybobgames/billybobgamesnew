@@ -1,0 +1,12 @@
+﻿{
+	"name": "Basketball Stars",
+	"short_name": "Basketball Stars",
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"orientation": "landscape",
+	"icons": [{
+		"src": "icon.png",
+		"sizes": "256x256",
+		"type": "image/png"
+	}]
+}

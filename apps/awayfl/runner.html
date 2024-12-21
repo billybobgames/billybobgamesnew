@@ -1,0 +1,19 @@
+<head>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="https://awayfl.github.io/awayfl-embed/dist/runtime.js" type="application/javascript"></script>
+</head>
+
+<body>
+    <script>
+        window.VERSION = AWAYFL.VERSION || '-';
+        window.RUNTIME_VERSION = Object.keys(AWAYFL.RUNTIME || {}).map((e) => {
+            return `${e}:${AWAYFL.RUNTIME[e]}`
+        });
+    </script>
+</body>

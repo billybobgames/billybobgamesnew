@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwayFL SWF Tester</title>
+    <style>
+        * {
+            user-select: none;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .wrap, section {
+            display:flex;
+            height: 100%;
+            width: 100%;
+            flex-direction: column;
+        }
+        section {
+            position: relative;
+            height: calc(100% - 8rem);
+        }
+
+        #drag__hint {
+            display: flex;
+            margin: auto;
+
+            justify-content: center;
+            align-items: center;
+
+            width: 80%;
+            height: 80%;
+
+            color: #ccc;
+            background-color: #666;
+            border: 4px solid #888;
+            font-size: 2em;
+            border-radius: 8px;
+        }
+        
+        #drag__hint.over {
+            background-color: #222;
+        }
+
+        #hint__text__error, #hint__text__crash {
+            color: #ee1100;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .dark {
+            background-color: #222;
+            box-shadow: -1px 1px 9px 8px black;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+
+            box-sizing: border-box;
+            font-size: 1.5rem;
+            color: #ccc;
+        }
+
+        nav, footer {
+            width: 100%;
+            height: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav > * {
+            margin-right: 1em;
+        }
+
+        #version__box {
+            flex-direction: column;
+            width: 420px;
+            font-size: 16px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    
+        #version__list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #version__close {
+            margin: 0.5em;
+            font-size: 1.5em;
+        }
+
+        #header {
+            overflow-wrap: normal;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .last {
+            margin-left: auto;
+        }
+
+        .button {
+            background: #444;
+            border-radius: 4px;
+            padding: 4px 10px;
+        }
+
+        .button:hover {
+            background: #666;
+            cursor: pointer;
+        }
+
+        .logo {
+            background-image: url("gfx/logo.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            pointer-events: auto;
+            transition: all 0.5s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+    <body>
+        <div class="wrap">
+            <nav class="dark">
+                <a href="https://github.com/awayfl" target="__blank"> <div class="logo"></div></a>
+                <h4 id="header">
+                    AwayFL SWF Tester
+                </h4>
+                <span class="last button" id = "open">
+                    Open
+                </span>
+                <span class="button" id ="version__open">
+                    v.0.0
+                </span>
+            </nav>
+            <section id='drag__target' dropzone="true">
+                <iframe src='./runner.html?v=100'></iframe>
+                <div  id='drag__hint'>
+                    <span id='hint__text' class="">
+                        <span id='hint__text__main'>Click Here!</span>                    
+                        <span id='hint__text__error' class="hide"> Invalid SWF file!</span>
+                        <span id='hint__text__load' class="hide"> Trying to load...</span>
+                        <span id='hint__text__crash' class="hide"> AwayFL has crashed.<br>See console for details.</span>
+
+                    </span>
+                </div>
+            </section>
+            <div id="version__box" class="dark" style="display: none;">
+                <h4>AWAY LIB VERSION</h4>
+                <div id='version__list'></div>
+                <div class="button" id='version__close'>Close</div>
+            </div>
+            <footer class="dark">
+                <span id = 'file_info'>FILE: =(</span>
+                <span class="hide last" id="fps__text">FPS: <span id="fps__text__counter">00/30</span></span>
+            </footer>
+        </div>
+        <input type="file" id="file-input" accept=".swf" style="display: none;"/>
+    </body>
+
+    <script>
+        const FLASH_MAP = {
+                [9]:  9.0 ,   
+                [10]: 10.0,
+                [11]: 10.2,
+                [12]: 10.3,
+                [13]: 11.0,
+                [14]: 11.1,
+                [15]: 11.2,
+                [16]: 11.3,
+                [17]: 11.4,
+                [18]: 11.5,
+                [19]: 11.6
+        };
+
+        const $ = document.querySelector.bind(document);
+        const frame = $('iframe');
+
+        let runtime;
+        let player;
+
+        function internalFrameCrash({message}) {
+            runtime.location.reload();
+            
+            showHint('crash');
+        }
+
+        function reloadRuntime() {
+            runtime && runtime.location.reload();
+
+            return new Promise((res) => {
+                    frame.onload = () =>{
+                        runtime = frame.contentWindow;
+                        runtime.addEventListener('error', internalFrameCrash);
+                        res();
+                    };
+                }
+            );
+        }
+
+        function fillVersion(runtime, libs) {
+            $("#version__open").textContent = runtime;
+            
+            const list = $('#version__list');
+
+            list.innerHTML = '';
+            libs.forEach((e) =>  {
+                const n = document.createElement("span");
+                n.textContent = e;
+                list.appendChild(n);
+            })
+        }
+
+        reloadRuntime().then(()=>{
+            setTimeout(()=>{
+                fillVersion(runtime.VERSION, runtime.RUNTIME_VERSION);
+            }, 1000)
+        });
+
+        const openBtn = $('#open');
+        const openV = $('#version__open');
+        const closeV = $('#version__close');
+        
+        const dropArea = $('#drag__target');
+        const dropHint = $('#drag__hint');
+        
+        const hints = ['main', 'error', 'await', 'load', 'crash']
+            .reduce((acc, e) => (acc[e] = $('#hint__text__' + e), acc), {});
+        
+        const showHint = (name) => {
+            Object.keys(hints).forEach((e)=>{
+                hints[e] && hints[e].classList.toggle('hide', name !== e);
+            });
+        }
+
+        openV.addEventListener('click', e=>{
+            $('#version__box').style.display = '';
+        })
+
+        closeV.addEventListener('click', e=>{
+            $('#version__box').style.display = 'none';
+        })
+
+        const handleFile = (e) => {
+            e.preventDefault();
+            dropHint.classList.toggle('over', false);
+            const dt = e.dataTransfer;
+            /**
+             * @type {File} 
+             **/
+            const file = dt.files[0];
+            const acceptedTypes = ['', 'application/x-shockwave-flash', 'application/vnd.adobe.flash.movie'];
+
+            if (!(file && acceptedTypes.includes(file.type))) {
+                showHint('error');
+                return;
+            }
+
+            
+            showHint('load');
+
+            if (file.type === '') {
+                const r = new FileReader();
+                r.readAsArrayBuffer(file);
+                r.onload = (data) => {
+                    const r = data.target.result;
+                    const magic = String.fromCharCode.apply(null, new Uint8Array(r, 0, 3));
+
+                    if (magic === 'CWS' || magic === 'FWS' || magic === 'ZWS') {
+                        createPlayer(file);
+                        return;
+                    }
+
+                    showHint('error');
+                };
+                return;
+            }
+            
+            createPlayer(file);
+        };
+
+        const c = $('#fps__text__counter'); 
+        setInterval((e)=>{
+            $('#fps__text').classList.toggle('hide', !player);
+
+            if(!player) return;
+
+            c.textContent = `${ player._currentFps.toFixed(0).padStart('0',2)}/${player.frameRate}`;
+            player._currentFps = 0;
+        }, 1000)
+    
+        async function createPlayer(file) {
+
+            if(player) {
+                await reloadRuntime();
+            }
+
+            frame.style.opacity = 0;
+
+            const p = dropHint.parentElement;
+            player = new runtime.AWAYFL.Player(p);
+
+            const reader = new FileReader();
+
+            const buff = new Promise(res =>{
+                reader.onload = (e) => res(e.target.result);
+                reader.readAsArrayBuffer(file);
+            });
+
+            await player.loadBuffer(await buff);
+        
+            frame.style.opacity = 1;
+            frame.style.pointerEvents = 'all';
+            //dropHint.style.display = 'none';
+
+            player.play();
+
+            const fileInfo = $('#file_info');
+            const data = player._swfFile;
+
+            fileInfo.textContent = `size: ${ data.bytesTotal / 1000 | 0}Kb, flash: ${data.fpVersion}, ${data.useAVM1 ? 'AS2': 'AS3'}`;
+
+            const color = '#' + (data.backgroundColor & 0xffffff).toString(16).padStart(6, '0');
+            frame.style.backgroundColor = color;
+        }
+
+        const _click = e => {
+            const fi = $('#file-input');
+
+            fi.addEventListener('change', (e) =>{
+                if(fi.files.length > 0) {
+                    dropArea.removeEventListener("click", _click);
+                    handleFile({
+                        preventDefault: ()=>{},
+                        dataTransfer: {files:fi.files}
+                    });
+
+                    e.target.value = '';
+                    e.target.replaceWith(e.target.cloneNode(true));
+                    e.preventDefault();
+                }
+            })
+            fi.click();
+        };
+
+        openBtn.addEventListener('click', _click);
+        dropArea.addEventListener('click', _click);
+
+    </script>
+</html>
