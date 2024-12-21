@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1500"
+   height="500"
+   viewBox="0 0 1500 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="emulated.svg"
+   inkscape:export-filename="other.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="1.0344199"
+     inkscape:cx="597.43631"
+     inkscape:cy="370.7392"
+     inkscape:window-width="2160"
+     inkscape:window-height="1346"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1" />
+  <rect
+     style="fill:#211f21;paint-order:markers fill stroke;fill-opacity:1"
+     id="rect1"
+     width="1500"
+     height="500"
+     x="0"
+     y="0" />
+  <g
+     id="g1"
+     transform="translate(3.6827665)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:120px;line-height:0.8;font-family:'Product Sans Black';-inkscape-font-specification:'Product Sans Black, ';text-align:center;text-anchor:middle;fill:#e6e1e3;fill-opacity:1;paint-order:markers fill stroke"
+       x="773.40411"
+       y="348.07999"
+       id="text2"
+       inkscape:label="text2"><tspan
+         sodipodi:role="line"
+         id="tspan1-8"
+         x="773.40411"
+         y="348.07999">GAMES</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:120px;line-height:0.8;font-family:'Product Sans Black';-inkscape-font-specification:'Product Sans Black, ';text-align:center;text-anchor:middle;fill:#e6e1e3;fill-opacity:1;paint-order:markers fill stroke"
+       x="871.86426"
+       y="235.92"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         x="871.86426"
+         y="235.92"
+         style="font-size:120px">EMULATED</tspan></text>
+    <path
+       d="m 416.97532,350 v -23.52941 q -9.70588,0 -16.61765,-6.91177 -6.91176,-6.91176 -6.91176,-16.61764 V 173.52941 q 0,-9.70588 6.91176,-16.61765 Q 407.26944,150 416.97532,150 h 188.2353 q 9.70588,0 16.61764,6.91176 6.91177,6.91177 6.91177,16.61765 v 129.41177 q 0,9.70588 -6.91177,16.61764 -6.91176,6.91177 -16.61764,6.91177 V 350 h -11.76471 l -7.64706,-23.52941 H 436.6812 L 428.74003,350 Z m 0,-47.05882 h 188.2353 V 173.52941 h -188.2353 z m 94.11765,-64.70589 z"
+       id="path1"
+       style="fill:#e6e1e3;fill-opacity:1;stroke-width:0.294118"
+       transform="translate(-86.715789)"
+       inkscape:label="path1" />
+  </g>
+</svg>
