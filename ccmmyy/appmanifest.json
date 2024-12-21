@@ -1,0 +1,11 @@
+﻿{
+	"name": "CCMMYY",
+	"short_name": "CCMMYY",
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"icons": [{
+		"src": "favicon.png",
+		"sizes": "192x192",
+		"type": "image/png"
+	}]
+}

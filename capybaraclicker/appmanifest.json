@@ -1,0 +1,11 @@
+﻿{
+	"name": "Capybara Clicker",
+	"short_name": "Capybara Clicker",
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"icons": [{
+		"src": "icon.png",
+		"sizes": "256x256",
+		"type": "image/png"
+	}]
+}
