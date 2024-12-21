@@ -1,0 +1,11 @@
+﻿{
+	"name": "Billy Bob Games",
+	"short_name": "Billy Bob Games",
+	"start_url": "/index.html",
+	"display": "fullscreen",
+	"icons": [{
+		"src": "/favicon-apple-touch.png",
+		"sizes": "256x256",
+		"type": "image/png"
+	}]
+}
