@@ -1,0 +1,7 @@
+.webgl-content,
+#gameContainer,
+#unityContainer,
+canvas {
+  width:100% !important;
+  height:var(--half-width) !important
+}
