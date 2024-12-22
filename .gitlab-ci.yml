@@ -2,8 +2,6 @@
 pages:
   stage: deploy
   script:
-    - git remote add origin https://github.com/billybobgames/billybobgames.github.io.git
-    - git pull origin master
     - mkdir .public
     - cp -r ./* .public
     - rm -rf public
